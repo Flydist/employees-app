@@ -3,21 +3,22 @@ import { Controller, useForm } from 'react-hook-form'
 import { Button } from 'react-bootstrap'
 import { Picker } from '../../../../components/Picker/Picker'
 import { Select } from '../../../../components/Select/Select'
-import { FlexContainer, StyledForm } from './AddForm.styled'
 import { Input } from '../../../../components/Input/Input'
+import { FlexContainer, StyledForm } from './AddForm.styled'
 import { fullnameRule } from '../../../../constants/validationRules'
+import { useEmployeesStore } from '../../../../hooks/useEmployeesStore'
 
 enum SexType {
   male = 'male',
-  female = 'female'
+  female = 'female',
 }
 
 type FormValues = {
-  fullname: string;
-  position: string;
-  birthday: Date;
-  sex: SexType;
-  isFired: boolean;
+  fullname: string
+  position: string
+  birthday: Date
+  sex: SexType
+  isFired: boolean
 }
 
 const positions = [
@@ -35,28 +36,42 @@ const AddForm: FC = () => {
     register, handleSubmit, errors, control,
   } = useForm<FormValues>()
 
+  const { addEmployee } = useEmployeesStore()
+
   const onSubmit = (data: FormValues) => {
-    // eslint-disable-next-line no-console
-    console.log(data)
+    addEmployee(data)
   }
 
   return (
     <FlexContainer>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
+        <Input
+          label="ФИО"
+          placeholder="Введите ФИО"
+          name="fullname"
+          ref={register({
+            required: { value: true, message: 'Обязательно для заполнения' },
+            pattern: { value: fullnameRule, message: 'Введите полное ФИО' },
+          })}
+          helperText={errors.fullname?.message ?? ''}
+          hasError={Boolean(errors.fullname)}
+        />
 
-        <Input label="ФИО" placeholder="Введите ФИО" name="fullname" ref={register({ required: { value: true, message: 'Обязательно для заполнения' }, pattern: { value: fullnameRule, message: 'Введите полное ФИО' } })} helperText={errors.fullname?.message ?? ''} hasError={Boolean(errors.fullname)} />
-
-        <Select label="Должность" name="position" ref={register({ required: true })} options={positions} helperText="Обязательно для заполнения" hasError={Boolean(errors.position)} />
+        <Select
+          label="Должность"
+          name="position"
+          ref={register({ required: true })}
+          options={positions}
+          helperText="Обязательно для заполнения"
+          hasError={Boolean(errors.position)}
+        />
 
         <StyledForm.Group>
-          <p><StyledForm.Label>Дата рождения</StyledForm.Label></p>
+          <p>
+            <StyledForm.Label>Дата рождения</StyledForm.Label>
+          </p>
           <Controller
-            render={({ onChange, value }) => (
-              <Picker
-                selected={value}
-                onChange={onChange}
-              />
-            )}
+            render={({ onChange, value }) => <Picker selected={value} onChange={onChange} />}
             control={control}
             name="birthday"
             defaultValue={null}
@@ -64,7 +79,9 @@ const AddForm: FC = () => {
         </StyledForm.Group>
 
         <StyledForm.Group>
-          <p><StyledForm.Label>Пол</StyledForm.Label></p>
+          <p>
+            <StyledForm.Label>Пол</StyledForm.Label>
+          </p>
           <StyledForm.Check
             inline
             name="sex"
@@ -86,14 +103,15 @@ const AddForm: FC = () => {
         </StyledForm.Group>
 
         <StyledForm.Group>
-          <p><StyledForm.Label>Уволен</StyledForm.Label></p>
+          <p>
+            <StyledForm.Label>Уволен</StyledForm.Label>
+          </p>
           <StyledForm.Check inline label="Уволен" type="checkbox" name="isFired" ref={register} />
         </StyledForm.Group>
 
         <Button variant="success" type="submit">
           Добавить
         </Button>
-
       </StyledForm>
     </FlexContainer>
   )

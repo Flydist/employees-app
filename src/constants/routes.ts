@@ -1,3 +1,3 @@
 export enum ROUTES {
-  main = '/employees'
+  main = '/employees',
 }

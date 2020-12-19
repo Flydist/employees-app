@@ -8,5 +8,10 @@ registerLocale('ru', ru)
 export const Picker: FC<ReactDatePickerProps> = (props) => (
   <StyledDatePicker
     {...props}
+    peekNextMonth
+    showMonthDropdown
+    showYearDropdown
+    locale={ru}
+    dropdownMode="select"
   />
 )
