@@ -27,14 +27,27 @@ type FormValues = {
 export class Employees {
   employees: Employee[] = []
 
-  selectedEmployee = '0'
+  selectedEmployee = ''
+
+  editableId = ''
+
+  isAddMode = true
 
   showEmployeeInfo = (id: string): void => {
     this.selectedEmployee = id
   }
 
+  setAddMode = (): void => {
+    this.isAddMode = true
+  }
+
+  setEditableId = (id: string): void => {
+    this.editableId = id
+    this.isAddMode = false
+  }
+
   deleteEmployee = (id: string): void => {
-    this.selectedEmployee = '0'
+    this.selectedEmployee = ''
     this.employees = this.employees.filter((item) => item.id !== id)
   }
 
@@ -45,6 +58,13 @@ export class Employees {
       ...employee,
     }
     this.employees.push(newEmployee)
+  }
+
+  editEmployee = (id: string, data: FormValues): void => {
+    // eslint-disable-next-line max-len
+    this.employees = this.employees.map((employee) => (employee.id === id ? { id: employee.id, ...data } : employee))
+    this.isAddMode = true
+    this.setAddMode()
   }
 
   constructor() {

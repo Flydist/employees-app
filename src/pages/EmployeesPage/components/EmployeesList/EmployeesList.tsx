@@ -4,10 +4,10 @@ import { StyledTable } from './EmployeesList.styled'
 import { useEmployeesStore } from '../../../../hooks/useEmployeesStore'
 
 const EmployeesList: FC = observer(() => {
-  const { employees, showEmployeeInfo } = useEmployeesStore()
+  const { employees, showEmployeeInfo, isAddMode } = useEmployeesStore()
 
   return (
-    <StyledTable bordered hover>
+    <StyledTable bordered hover isaddmode={isAddMode.toString()}>
       <thead>
         <tr>
           <th>Полное имя</th>
@@ -18,7 +18,7 @@ const EmployeesList: FC = observer(() => {
         {employees.map((employee) => (
           <tr
             key={`${employee.fullname + employee.id}`}
-            onClick={() => showEmployeeInfo(employee.id)}
+            onClick={() => isAddMode && showEmployeeInfo(employee.id)}
           >
             <td>{employee.fullname}</td>
             <td>{employee.position}</td>

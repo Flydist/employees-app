@@ -16,7 +16,7 @@ export const EmployeesPage: FC = observer(() => {
         </Col>
         <Col md={6}>
           <AddForm />
-          {selectedEmployee !== '0' && <EmployeeInfo />}
+          {Boolean(selectedEmployee) && <EmployeeInfo />}
         </Col>
       </Row>
     </>

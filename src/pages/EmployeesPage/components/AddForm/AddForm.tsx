@@ -1,6 +1,7 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Button } from 'react-bootstrap'
+import { observer } from 'mobx-react'
 import { Picker } from '../../../../components/Picker/Picker'
 import { Select } from '../../../../components/Select/Select'
 import { Input } from '../../../../components/Input/Input'
@@ -21,6 +22,8 @@ type FormValues = {
   isFired: boolean
 }
 
+type FieldsType = 'fullname' | 'position' | 'birthday' | 'sex' | 'isFired'
+
 const positions = [
   'Консультант',
   'Продавец-консультант',
@@ -31,16 +34,33 @@ const positions = [
   'Директор магазина',
 ]
 
-const AddForm: FC = () => {
+const AddForm: FC = observer(() => {
   const {
-    register, handleSubmit, errors, control,
+    register, handleSubmit, errors, control, setValue, reset,
   } = useForm<FormValues>()
 
-  const { addEmployee } = useEmployeesStore()
+  const {
+    addEmployee,
+    editableId,
+    employees,
+    isAddMode,
+    editEmployee,
+    setAddMode,
+  } = useEmployeesStore()
 
   const onSubmit = (data: FormValues) => {
-    addEmployee(data)
+    if (isAddMode) addEmployee(data)
+    else editEmployee(editableId, data)
+    reset()
   }
+
+  useEffect(() => {
+    if (!isAddMode) {
+      const currentEmployee = employees.filter((item) => item.id === editableId)[0]
+      const fields: FieldsType[] = ['fullname', 'position', 'birthday', 'sex', 'isFired']
+      fields.forEach((field) => setValue(field, currentEmployee[field]))
+    }
+  }, [isAddMode])
 
   return (
     <FlexContainer>
@@ -56,7 +76,6 @@ const AddForm: FC = () => {
           helperText={errors.fullname?.message ?? ''}
           hasError={Boolean(errors.fullname)}
         />
-
         <Select
           label="Должность"
           name="position"
@@ -65,7 +84,6 @@ const AddForm: FC = () => {
           helperText="Обязательно для заполнения"
           hasError={Boolean(errors.position)}
         />
-
         <StyledForm.Group>
           <p>
             <StyledForm.Label>Дата рождения</StyledForm.Label>
@@ -77,7 +95,6 @@ const AddForm: FC = () => {
             defaultValue={null}
           />
         </StyledForm.Group>
-
         <StyledForm.Group>
           <p>
             <StyledForm.Label>Пол</StyledForm.Label>
@@ -101,20 +118,31 @@ const AddForm: FC = () => {
             ref={register}
           />
         </StyledForm.Group>
-
         <StyledForm.Group>
           <p>
             <StyledForm.Label>Уволен</StyledForm.Label>
           </p>
           <StyledForm.Check inline label="Уволен" type="checkbox" name="isFired" ref={register} />
         </StyledForm.Group>
-
         <Button variant="success" type="submit">
-          Добавить
+          {isAddMode && 'Добавить'}
+          {!isAddMode && 'Редактировать'}
+        </Button>
+        {' '}
+        <Button
+          variant="danger"
+          type="button"
+          onClick={() => {
+            reset()
+            setAddMode()
+          }}
+        >
+          {isAddMode && 'Очистить'}
+          {!isAddMode && 'Отмена'}
         </Button>
       </StyledForm>
     </FlexContainer>
   )
-}
+})
 
 export default AddForm
