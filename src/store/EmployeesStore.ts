@@ -1,26 +1,13 @@
 import { makeAutoObservable } from 'mobx'
 import { v4 as uuidv4 } from 'uuid'
-
-enum SexType {
-  male = 'male',
-  female = 'female',
-  unknown = '',
-}
+import { FormValues, SexType } from '../types/types'
 
 type Employee = {
   id: string
   fullname: string
   position: string
   birthday: Date
-  sex: SexType
-  isFired: boolean
-}
-
-type FormValues = {
-  fullname: string
-  position: string
-  birthday: Date
-  sex: SexType
+  sex: SexType | ''
   isFired: boolean
 }
 
@@ -37,18 +24,13 @@ export class Employees {
     this.selectedEmployee = id
   }
 
-  setAddMode = (): void => {
-    this.isAddMode = true
+  setAddMode = (value: boolean): void => {
+    this.isAddMode = value
   }
 
   setEditableId = (id: string): void => {
     this.editableId = id
     this.isAddMode = false
-  }
-
-  deleteEmployee = (id: string): void => {
-    this.selectedEmployee = ''
-    this.employees = this.employees.filter((item) => item.id !== id)
   }
 
   addEmployee = (employee: FormValues): void => {
@@ -61,10 +43,16 @@ export class Employees {
   }
 
   editEmployee = (id: string, data: FormValues): void => {
-    // eslint-disable-next-line max-len
-    this.employees = this.employees.map((employee) => (employee.id === id ? { id: employee.id, ...data } : employee))
+    this.employees = this.employees.map(
+      (employee) => (employee.id === id ? { id: employee.id, ...data } : employee),
+    )
     this.isAddMode = true
-    this.setAddMode()
+    this.setAddMode(true)
+  }
+
+  deleteEmployee = (id: string): void => {
+    this.selectedEmployee = ''
+    this.employees = this.employees.filter((item) => item.id !== id)
   }
 
   constructor() {

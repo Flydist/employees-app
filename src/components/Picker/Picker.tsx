@@ -1,9 +1,7 @@
 import React, { FC } from 'react'
-import { ReactDatePickerProps, registerLocale } from 'react-datepicker'
-import ru from 'date-fns/locale/ru'
-import { StyledDatePicker } from './Picker.styled'
+import { ReactDatePickerProps } from 'react-datepicker'
 
-registerLocale('ru', ru)
+import { StyledDatePicker } from './Picker.styled'
 
 export const Picker: FC<ReactDatePickerProps> = (props) => (
   <StyledDatePicker
@@ -11,7 +9,7 @@ export const Picker: FC<ReactDatePickerProps> = (props) => (
     peekNextMonth
     showMonthDropdown
     showYearDropdown
-    locale={ru}
+    locale="ru"
     dropdownMode="select"
   />
 )

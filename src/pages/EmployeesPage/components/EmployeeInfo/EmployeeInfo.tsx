@@ -35,8 +35,7 @@ const EmployeeInfo: FC = observer(() => {
           </p>
           <p>
             Пол -
-            {/* eslint-disable-next-line no-nested-ternary */}
-            {sex === '' ? 'Не указан' : sex === 'male' ? 'Мужской' : 'Женский'}
+            {sex !== '' ? sex : 'Не указан'}
           </p>
           <p>
             Уволен -

@@ -20,4 +20,8 @@ export const StyledForm = styled(Form)`
   border: 1px solid #eaeaea;
   padding: 20px 15px;
   border-radius: 10px;
+
+  label {
+    display: block;
+  }
 `

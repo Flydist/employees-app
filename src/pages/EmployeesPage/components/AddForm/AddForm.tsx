@@ -8,21 +8,8 @@ import { Input } from '../../../../components/Input/Input'
 import { FlexContainer, StyledForm } from './AddForm.styled'
 import { fullnameRule } from '../../../../constants/validationRules'
 import { useEmployeesStore } from '../../../../hooks/useEmployeesStore'
-
-enum SexType {
-  male = 'male',
-  female = 'female',
-}
-
-type FormValues = {
-  fullname: string
-  position: string
-  birthday: Date
-  sex: SexType
-  isFired: boolean
-}
-
-type FieldsType = 'fullname' | 'position' | 'birthday' | 'sex' | 'isFired'
+import { resetFormValues, setValuesPack } from '../../../../helpers/helpers'
+import { FormValues } from '../../../../types/types'
 
 const positions = [
   'Консультант',
@@ -57,8 +44,7 @@ const AddForm: FC = observer(() => {
   useEffect(() => {
     if (!isAddMode) {
       const currentEmployee = employees.filter((item) => item.id === editableId)[0]
-      const fields: FieldsType[] = ['fullname', 'position', 'birthday', 'sex', 'isFired']
-      fields.forEach((field) => setValue(field, currentEmployee[field]))
+      setValuesPack<FormValues>(setValue, currentEmployee)
     }
   }, [isAddMode])
 
@@ -85,9 +71,7 @@ const AddForm: FC = observer(() => {
           hasError={Boolean(errors.position)}
         />
         <StyledForm.Group>
-          <p>
-            <StyledForm.Label>Дата рождения</StyledForm.Label>
-          </p>
+          <StyledForm.Label>Дата рождения</StyledForm.Label>
           <Controller
             render={({ onChange, value }) => <Picker selected={value} onChange={onChange} />}
             control={control}
@@ -96,15 +80,13 @@ const AddForm: FC = observer(() => {
           />
         </StyledForm.Group>
         <StyledForm.Group>
-          <p>
-            <StyledForm.Label>Пол</StyledForm.Label>
-          </p>
+          <StyledForm.Label>Пол</StyledForm.Label>
           <StyledForm.Check
             inline
             name="sex"
             type="radio"
             label="Мужской"
-            value="male"
+            value="Мужской"
             id="default-radio-1"
             ref={register}
           />
@@ -113,15 +95,13 @@ const AddForm: FC = observer(() => {
             name="sex"
             type="radio"
             label="Женский"
-            value="female"
+            value="Женский"
             id="default-radio-2"
             ref={register}
           />
         </StyledForm.Group>
         <StyledForm.Group>
-          <p>
-            <StyledForm.Label>Уволен</StyledForm.Label>
-          </p>
+          <StyledForm.Label>Уволен</StyledForm.Label>
           <StyledForm.Check inline label="Уволен" type="checkbox" name="isFired" ref={register} />
         </StyledForm.Group>
         <Button variant="success" type="submit">
@@ -133,8 +113,7 @@ const AddForm: FC = observer(() => {
           variant="danger"
           type="button"
           onClick={() => {
-            reset()
-            setAddMode()
+            resetFormValues(reset, setAddMode)
           }}
         >
           {isAddMode && 'Очистить'}
