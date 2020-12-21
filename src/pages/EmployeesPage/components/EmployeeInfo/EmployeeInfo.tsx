@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { observer } from 'mobx-react'
 import { Button } from 'react-bootstrap'
+import { format } from 'date-fns'
 import { useEmployeesStore } from '../../../../hooks/useEmployeesStore'
 import { InfoBlock, FlexContainer } from './EmployeeInfo.styled'
 
@@ -31,7 +32,7 @@ const EmployeeInfo: FC = observer(() => {
           </p>
           <p>
             День рождения -
-            {birthday !== null ? birthday.toLocaleDateString() : 'Не указан'}
+            {birthday !== null ? format(new Date(birthday), 'dd.MM.yyyy') : 'Не указан'}
           </p>
           <p>
             Пол -

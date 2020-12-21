@@ -10,6 +10,7 @@ export const Picker: FC<ReactDatePickerProps> = (props) => (
     showMonthDropdown
     showYearDropdown
     locale="ru"
+    dateFormat="dd.MM.yyyy"
     dropdownMode="select"
   />
 )

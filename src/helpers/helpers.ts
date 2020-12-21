@@ -1,8 +1,9 @@
 import { SetValueConfig } from 'react-hook-form'
 
-type ResetFormValuesProps =
-  (reset: (values?: Record<string, unknown>, omitResetState?: Record<string, boolean>) => void,
-    setAddMode: (value: boolean) => void) => void
+type ResetFormValuesProps = (
+  reset: (values?: Record<string, unknown>, omitResetState?: Record<string, boolean>) => void,
+  setAddMode: (value: boolean) => void,
+) => void
 
 export const resetFormValues: ResetFormValuesProps = (reset, setAddMode) => {
   reset()

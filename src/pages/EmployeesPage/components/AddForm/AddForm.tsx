@@ -73,7 +73,9 @@ const AddForm: FC = observer(() => {
         <StyledForm.Group>
           <StyledForm.Label>Дата рождения</StyledForm.Label>
           <Controller
-            render={({ onChange, value }) => <Picker selected={value} onChange={onChange} />}
+            render={({ onChange, value }) => (
+              <Picker selected={value ? new Date(value) : value} onChange={onChange} />
+            )}
             control={control}
             name="birthday"
             defaultValue={null}

@@ -1,8 +1,9 @@
 import { makeAutoObservable } from 'mobx'
 import { v4 as uuidv4 } from 'uuid'
+import { saveState, loadState } from '../localStorage/localStorage'
 import { FormValues, SexType } from '../types/types'
 
-type Employee = {
+export type Employee = {
   id: string
   fullname: string
   position: string
@@ -43,9 +44,7 @@ export class Employees {
   }
 
   editEmployee = (id: string, data: FormValues): void => {
-    this.employees = this.employees.map(
-      (employee) => (employee.id === id ? { id: employee.id, ...data } : employee),
-    )
+    this.employees = this.employees.map((emp) => (emp.id === id ? { id: emp.id, ...data } : emp))
     this.isAddMode = true
     this.setAddMode(true)
   }
@@ -55,8 +54,19 @@ export class Employees {
     this.employees = this.employees.filter((item) => item.id !== id)
   }
 
+  saveEmployeesToLocalStorage = (state: Employee[], itemName: string): void => {
+    saveState(state, itemName)
+  }
+
+  loadEmployeesFromLocalStorage = (itemName: string): void => {
+    const persistedState = loadState<Employee[]>(itemName)
+    if (persistedState) this.employees = persistedState
+    else this.employees = []
+  }
+
   constructor() {
     makeAutoObservable(this)
+    this.loadEmployeesFromLocalStorage('employees')
   }
 }
 
