@@ -11,10 +11,10 @@ export const EmployeesPage: FC = observer(() => {
   return (
     <>
       <Row>
-        <Col md={6}>
+        <Col md={{ span: 6, order: 'first' }} xs={{ span: 12, order: 'last' }}>
           <EmployeesList />
         </Col>
-        <Col md={6}>
+        <Col md={{ span: 6, order: 'last' }} xs={{ span: 12, order: 'first' }}>
           <AddForm />
           {Boolean(selectedEmployee) && <EmployeeInfo />}
         </Col>

@@ -8,7 +8,7 @@ export type Employee = {
   fullname: string
   position: string
   birthday: Date
-  sex: SexType | ''
+  sex: SexType
   isFired: boolean
 }
 

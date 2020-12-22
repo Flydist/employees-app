@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { observer } from 'mobx-react'
-import { StyledTable, StyledButton } from './EmployeesList.styled'
+import { Button } from 'react-bootstrap'
+import { StyledTable, ButtonsBlock } from './EmployeesList.styled'
 import { useEmployeesStore } from '../../../../hooks/useEmployeesStore'
 
 const EmployeesList: FC = observer(() => {
@@ -9,6 +10,7 @@ const EmployeesList: FC = observer(() => {
     showEmployeeInfo,
     isAddMode,
     saveEmployeesToLocalStorage,
+    loadEmployeesFromLocalStorage,
   } = useEmployeesStore()
 
   return (
@@ -32,15 +34,26 @@ const EmployeesList: FC = observer(() => {
           ))}
         </tbody>
       </StyledTable>
-      <StyledButton
-        variant="primary"
-        type="button"
-        onClick={() => saveEmployeesToLocalStorage(employees, 'employees')}
-        disabled={!isAddMode}
-        className="mt-4 mx-auto"
-      >
-        Сохранить изменения
-      </StyledButton>
+      <ButtonsBlock>
+        <Button
+          variant="primary"
+          type="button"
+          onClick={() => saveEmployeesToLocalStorage(employees, 'employees')}
+          disabled={!isAddMode}
+          className="mt-4 mx-auto"
+        >
+          Сохранить изменения
+        </Button>
+        <Button
+          variant="primary"
+          type="button"
+          onClick={() => loadEmployeesFromLocalStorage('employees')}
+          disabled={!isAddMode}
+          className="mt-4 mx-auto"
+        >
+          Обновить данные (из сохранения)
+        </Button>
+      </ButtonsBlock>
     </>
   )
 })

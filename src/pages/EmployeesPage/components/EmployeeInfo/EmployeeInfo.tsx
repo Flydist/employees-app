@@ -17,6 +17,7 @@ const EmployeeInfo: FC = observer(() => {
   const {
     fullname, position, birthday, sex, isFired,
   } = currentEmployee
+
   return (
     <>
       <FlexContainer>
