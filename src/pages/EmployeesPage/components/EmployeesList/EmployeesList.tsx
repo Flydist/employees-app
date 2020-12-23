@@ -40,7 +40,7 @@ const EmployeesList: FC = observer(() => {
           type="button"
           onClick={() => saveEmployeesToLocalStorage(employees, 'employees')}
           disabled={!isAddMode}
-          className="mt-4 mx-auto"
+          className="mt-4"
         >
           Сохранить изменения
         </Button>
@@ -49,7 +49,7 @@ const EmployeesList: FC = observer(() => {
           type="button"
           onClick={() => loadEmployeesFromLocalStorage('employees')}
           disabled={!isAddMode}
-          className="mt-4 mx-auto"
+          className="mt-4"
         >
           Обновить данные (из сохранения)
         </Button>

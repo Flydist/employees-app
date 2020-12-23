@@ -25,22 +25,27 @@ const EmployeeInfo: FC = observer(() => {
           <h5>Информация о сотруднике:</h5>
           <p>
             Фио -
+            {' '}
             {fullname}
           </p>
           <p>
             Должность -
+            {' '}
             {position}
           </p>
           <p>
             День рождения -
+            {' '}
             {birthday !== null ? format(new Date(birthday), 'dd.MM.yyyy') : 'Не указан'}
           </p>
           <p>
             Пол -
+            {' '}
             {sex !== '' ? sex : 'Не указан'}
           </p>
           <p>
             Уволен -
+            {' '}
             {isFired ? 'Да' : 'Нет'}
           </p>
           <Button variant="primary" type="button" onClick={() => setEditableId(currentEmployee.id)}>
